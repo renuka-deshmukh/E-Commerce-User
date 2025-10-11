@@ -46,7 +46,7 @@ const Dashboard = () => {
 
   return (
     <div className="m-3">
-            {/* ---------- Categories Section ---------- */}
+      {/* ---------- Categories Section ---------- */}
       <div className="categories-bar bg-white shadow-sm py-3 rounded">
         <div className="container d-flex justify-content-between flex-wrap">
           {categories.map((category, index) => (
@@ -146,7 +146,7 @@ const Dashboard = () => {
       </div>
 
       {/* ---------- Product Slider ---------- */}
-      <div className="container my-4">
+      <div className="container-fluid my-4 p-3 bg-light">
         <h5 className="fw-bold mb-3">Best deals on smartphones</h5>
         <div className="d-flex overflow-auto">
           {products.map((item) => (
@@ -181,6 +181,29 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
+
+      {products.map((item) => (
+        <Link
+          to={`/products/${item.catID}`}   // navigate to ProductsPage for category
+          key={item.id}
+          className="text-decoration-none text-dark"
+        >
+          <div className="card me-3 border-0" style={{ width: "160px", flex: "0 0 auto" }}>
+            <img
+              src={item.pImage || "https://via.placeholder.com/110"}
+              className="card-img-top p-3"
+              alt={item.pName}
+              style={{ height: "180px", objectFit: "contain" }}
+            />
+            <div className="card-body text-center p-2">
+              <p className="card-title mb-1" style={{ fontSize: "15px" }}>{item.pName}</p>
+              <p className="text mb-0" style={{ fontSize: "13px" }}><b>₹{item.price}</b></p>
+            </div>
+          </div>
+        </Link>
+      ))}
+
+
 
     </div>
   );
