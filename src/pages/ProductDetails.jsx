@@ -54,7 +54,7 @@ const ProductDetails = () => {
                 {/* LEFT SIDE - Images */}
                 <div className="col-md-5 d-flex flex-column align-items-center">
                     <img
-                        src={product.image || "https://via.placeholder.com/400x400"}
+                        src={product.pImage || "https://via.placeholder.com/400x400"}
                         alt={product.pName}
                         className="img-fluid mb-3 rounded"
                         style={{ maxHeight: 400, objectFit: "contain" }}

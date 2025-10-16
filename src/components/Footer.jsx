@@ -100,7 +100,7 @@ const Footer = () => {
                     <span>Advertise</span>
                     <span>Gift Cards</span>
                     <span>Help Center</span>
-                    <span>© 2007–2025 YourShop.com</span>
+                    <span>© 2007–2025 BuyNest.com</span>
                 </div>
                 <div className="footer-payments">
                     <img src="/visa.png" alt="Visa" />

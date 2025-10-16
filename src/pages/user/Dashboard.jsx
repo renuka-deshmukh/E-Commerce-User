@@ -5,19 +5,7 @@ import { getAllBrands } from "../../services/brandApi";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const categoryImages = {
-    "Fashion & Accessories": "https://media.istockphoto.com/id/613654620/photo/fashionable-big-red-handbag-on-the-arm-of-the-girl.jpg?s=612x612&w=0&k=20&c=dqLeJBiFSxhj-ZWgbrU5oeSftTCTQo6BEGxGgGMCiIo=",
-    "Electronics & Gadgets": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60",
-    "Home & Living": "https://plus.unsplash.com/premium_photo-1676321046449-5fc72b124490?w=500&auto=format&fit=crop&q=60",
-    "Watches": "https://images.unsplash.com/photo-1511376777868-611b54f68947",
-    "Jewelry": "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3",
-    "Kids & Toys": "https://plus.unsplash.com/premium_photo-1684623605109-263925d88106?w=500&auto=format&fit=crop&q=60",
-    "Books & Stationery": "https://media.istockphoto.com/id/696967312/photo/pupils-on-class-in-school.webp?a=1&b=1&s=612x612&w=0&k=20&c=IXO3_BSxfBGLFZN4VGSJ4mqEV9FZ-z6VxF6Mt8rtQ9w=",
-    "Sports & Outdoors": "https://images.unsplash.com/photo-1606902965551-dce093cda6e7?w=500&auto=format&fit=crop&q=60",
-    "Sunglasses & Eyewear": "https://images.unsplash.com/photo-1611558709798-e009c8fd7706?w=500&auto=format&fit=crop&q=60",
-    "Snacks": "https://images.unsplash.com/photo-1604908176997-3335a19fc5a5",
-    "Beverages": "https://images.unsplash.com/photo-1606788075761-94d3b0db67a2",
-  };
+  
 
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -49,17 +37,17 @@ const Dashboard = () => {
       {/* ---------- Categories Section ---------- */}
       <div className="categories-bar bg-white shadow-sm py-3 rounded">
         <div className="container d-flex justify-content-between flex-wrap">
-          {categories.map((category, index) => (
-            <div
-              key={category.id || index}
+
+          {categories.map((cat) => (
+            <Link
+            to={`/category`}  
+              key={cat.id}
               className="text-center category-item mx-2 mb-2"
             >
               <img
-                src={
-                  categoryImages[category.cName] ||
-                  "https://via.placeholder.com/80"
-                }
-                alt={category.cName}
+                src={ cat.cImage ||
+                  "https://via.placeholder.com/80"}
+                alt={cat.cName}
                 className="category-img mb-1"
                 style={{
                   width: 60,
@@ -68,8 +56,8 @@ const Dashboard = () => {
                   borderRadius: 8,
                 }}
               />
-              <div className="small fw-medium mt-2">{category.cName}</div>
-            </div>
+              <div className="small fw-medium mt-2">{cat.cName}</div>
+            </Link>
           ))}
         </div>
       </div>
@@ -151,7 +139,7 @@ const Dashboard = () => {
         <div className="d-flex overflow-auto">
           {products.map((item) => (
             <Link
-              to={`/product/${item.id}`}   // 👈 navigate to product details page
+              to={`/product/${item.id}`}  
               key={item.id}
               className="text-decoration-none text-dark"
             >
@@ -161,7 +149,7 @@ const Dashboard = () => {
               >
                 <img
                   src={
-                    item.image ||
+                    item.pImage ||
                     "https://rukminim1.flixcart.com/image/110/110/xif0q/mobile/r/4/p/-original-imahf47e6gzt3ggw.jpeg?q=80"
                   }
                   className="card-img-top p-3"
@@ -184,7 +172,7 @@ const Dashboard = () => {
 
       {products.map((item) => (
         <Link
-          to={`/products/${item.catID}`}   // navigate to ProductsPage for category
+          to={`/products/${item.catID}`}   
           key={item.id}
           className="text-decoration-none text-dark"
         >
