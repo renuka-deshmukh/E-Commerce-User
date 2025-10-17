@@ -1,72 +1,94 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-const Sidebar = ({ brands = [], onFilterChange }) => {
+const Sidebar = ({ categories, brands, onFilterChange }) => {
   const [selectedBrands, setSelectedBrands] = useState([]);
-  const [price, setPrice] = useState(10000);
+  const [priceRange, setPriceRange] = useState([0, 100000]);
 
-  // Update filters whenever brand or price changes
-  useEffect(() => {
-    onFilterChange({ brands: selectedBrands, priceRange: [0, price] });
-  }, [selectedBrands, price]);
-
-  // Toggle brand selection
   const handleBrandChange = (brand) => {
-    setSelectedBrands((prev) =>
-      prev.includes(brand)
-        ? prev.filter((b) => b !== brand)
-        : [...prev, brand]
-    );
+    const updatedBrands = selectedBrands.includes(brand)
+      ? selectedBrands.filter((b) => b !== brand)
+      : [...selectedBrands, brand];
+
+    setSelectedBrands(updatedBrands);
+    onFilterChange({ brands: updatedBrands, priceRange });
+  };
+
+  const handlePriceChange = (e) => {
+    const value = Number(e.target.value);
+    const name = e.target.name;
+    const newRange =
+      name === "min"
+        ? [value, priceRange[1]]
+        : [priceRange[0], value];
+
+    setPriceRange(newRange);
+    onFilterChange({ brands: selectedBrands, priceRange: newRange });
   };
 
   return (
-    <div className="w-64 bg-white shadow-xl rounded-2xl p-5 border border-gray-200 sticky top-4 h-fit transition-all duration-300">
-      <h3 className="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">
-        Filters
-      </h3>
+    <div
+      className="bg-white p-3 shadow-sm"
+      style={{ width: "250px", height: "100vh", overflowY: "auto" }}
+    >
+      <h5 className="fw-bold mb-3">Filters</h5>
 
-      {/* Brand Filter */}
-      <div className="mb-6">
-        <h4 className="text-base font-medium text-gray-700 mb-2">Brands</h4>
-        <ul className="space-y-2 max-h-48 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300">
+      {/* Categories
+      <div className="mb-4">
+        <h6 className="fw-semibold">Categories</h6>
+        {categories.map((cat) => (
+          <p key={cat._id} className="mb-1 small text-muted">
+            {cat.cName}
+          </p>
+        ))}
+      </div> */}
+
+      {/* Brands */}
+      <div className="mb-4">
+        <h6 className="fw-semibold">Brands</h6>
+        <div style={{ maxHeight: "120px", overflowY: "auto" }}>
           {brands.length > 0 ? (
             brands.map((brand) => (
-              <li
-                key={brand}
-                className="flex items-center gap-2 text-gray-700 hover:bg-gray-50 rounded-md px-2 py-1 transition-colors"
-              >
+              <div key={brand} className="form-check mb-1">
                 <input
+                  className="form-check-input"
                   type="checkbox"
                   id={brand}
-                  value={brand}
                   checked={selectedBrands.includes(brand)}
                   onChange={() => handleBrandChange(brand)}
-                  className="accent-indigo-500 cursor-pointer m-1"
                 />
-                <label htmlFor={brand} className="cursor-pointer text-sm">
+                <label className="form-check-label small" htmlFor={brand}>
                   {brand}
                 </label>
-              </li>
+              </div>
             ))
           ) : (
-            <p className="text-gray-400 text-sm">No brands available</p>
+            <p className="text-muted small">No brands available</p>
           )}
-        </ul>
+        </div>
       </div>
 
-      {/* Price Filter */}
-      <div>
-        <h4 className="text-base font-medium text-gray-700 mb-2">
-          Price Range
-        </h4>
-        <input
-          type="range"
-          min={0}
-          max={10000}
-          value={price}
-          onChange={(e) => setPrice(Number(e.target.value))}
-          className="w-full accent-indigo-500 cursor-pointer"
-        />
-        <p className="text-gray-600 text-sm mt-1">Up to ₹{price}</p>
+      {/* Price Range */}
+      <div className="mb-4">
+        <h6 className="fw-semibold">Price Range (₹)</h6>
+        <div className="d-flex align-items-center gap-2">
+          <input
+            type="number"
+            name="min"
+            value={priceRange[0]}
+            onChange={handlePriceChange}
+            className="form-control form-control-sm"
+            style={{ width: "80px" }}
+          />
+          <span>-</span>
+          <input
+            type="number"
+            name="max"
+            value={priceRange[1]}
+            onChange={handlePriceChange}
+            className="form-control form-control-sm"
+            style={{ width: "80px" }}
+          />
+        </div>
       </div>
     </div>
   );

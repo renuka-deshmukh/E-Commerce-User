@@ -5,7 +5,7 @@ import { getAllBrands } from "../../services/brandApi";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  
+
 
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -23,7 +23,7 @@ const Dashboard = () => {
 
         if (catRes.data.success) setCategories(catRes.data.categories || []);
         if (prodRes.data.success) setProducts(prodRes.data.products || []);
-        if (brandRes.data.success) setBrands(brandRes.data.brands || []);
+        if (brandRes.data.success) setBrands((brandRes.data.brands || []));
       } catch (err) {
         console.error("Error fetching data ❌", err);
       }
@@ -40,12 +40,12 @@ const Dashboard = () => {
 
           {categories.map((cat) => (
             <Link
-            to={`/category`}  
+              to={`/products/${cat.id}`}
               key={cat.id}
               className="text-center category-item mx-2 mb-2"
             >
               <img
-                src={ cat.cImage ||
+                src={cat.cImage ||
                   "https://via.placeholder.com/80"}
                 alt={cat.cName}
                 className="category-img mb-1"
@@ -135,11 +135,11 @@ const Dashboard = () => {
 
       {/* ---------- Product Slider ---------- */}
       <div className="container-fluid my-4 p-3 bg-light">
-        <h5 className="fw-bold mb-3">Best deals on smartphones</h5>
+        <h5 className="fw-bold mb-3">Best deals on latest products</h5>
         <div className="d-flex overflow-auto">
           {products.map((item) => (
             <Link
-              to={`/product/${item.id}`}  
+              to={`/product/${item.id}`}
               key={item.id}
               className="text-decoration-none text-dark"
             >
@@ -170,26 +170,67 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {products.map((item) => (
-        <Link
-          to={`/products/${item.catID}`}   
-          key={item.id}
-          className="text-decoration-none text-dark"
+      <div className="container-fluid my-4 p-3 bg-light">
+        <h5 className="fw-bold mb-3">Best deals on smartphones</h5>
+        <div className="d-flex overflow-auto">
+
+          {products.map((item) => (
+            <Link
+              to={`/products/${item.catID}`}
+              key={item.id}
+              className="text-decoration-none text-dark"
+            >
+              <div className="card me-3 border-0" style={{ width: "160px", flex: "0 0 auto" }}>
+                <img
+                  src={item.pImage || "https://via.placeholder.com/110"}
+                  className="card-img-top p-3"
+                  alt={item.pName}
+                  style={{ height: "180px", objectFit: "contain" }}
+                />
+                <div className="card-body text-center p-2">
+                  <p className="card-title mb-1" style={{ fontSize: "15px" }}>{item.pName}</p>
+                  <p className="text mb-0" style={{ fontSize: "13px" }}><b>₹{item.price}</b></p>
+                </div>
+              </div>
+            </Link>
+          ))}
+
+        </div>
+      </div>
+
+      {/* ---------- Top Brands ---------- */}
+      <div className="container-fluid my-4 p-3 bg-light">
+        <h5 className="fw-bold mb-3">Top Brands</h5>
+        <div
+          className="d-flex overflow-auto"
+          style={{ gap: "1.5rem", scrollbarWidth: "thin", paddingBottom: "10px" }}
         >
-          <div className="card me-3 border-0" style={{ width: "160px", flex: "0 0 auto" }}>
-            <img
-              src={item.pImage || "https://via.placeholder.com/110"}
-              className="card-img-top p-3"
-              alt={item.pName}
-              style={{ height: "180px", objectFit: "contain" }}
-            />
-            <div className="card-body text-center p-2">
-              <p className="card-title mb-1" style={{ fontSize: "15px" }}>{item.pName}</p>
-              <p className="text mb-0" style={{ fontSize: "13px" }}><b>₹{item.price}</b></p>
-            </div>
-          </div>
-        </Link>
-      ))}
+          {brands.slice(0, 9).map((brand) => (
+            <Link
+              to={`/products/brand/${brand.id}`}
+              key={brand.id}
+              className="text-decoration-none text-dark"
+            >
+              <div
+                className="card border-0 text-center"
+                style={{ width: "120px", flex: "0 0 auto" }}
+              >
+                <img
+                  src={brand.bImage || "https://via.placeholder.com/100"}
+                  className="card-img-top p-2"
+                  alt={brand.bName}
+                  style={{ height: "100px", objectFit: "contain" }}
+                />
+                <div className="card-body p-1">
+                  <p className="card-title mb-0" style={{ fontSize: "14px" }}>
+                    {brand.bName}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
 
 
 
