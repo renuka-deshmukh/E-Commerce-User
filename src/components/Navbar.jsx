@@ -1,7 +1,8 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { FaSearch, FaUserCircle, FaShoppingCart, FaStore, FaHeart, FaTags, FaGift, FaSignOutAlt } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Navbar.css"; 
+import "./Navbar.css";
 import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = () => {
@@ -11,7 +12,7 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
       <div className="container-fluid">
         {/* Logo */}
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
           <img
             src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fkheaderlogo_exploreplus-44005d.svg"
             alt="Flipkart Logo"
@@ -42,7 +43,7 @@ const Navbar = () => {
               type="button"
               id="accountDropdown"
             >
-              <FaUserCircle className="me-1" /> 
+              <FaUserCircle className="me-1" />
               {loggedUser ? loggedUser.name : "Account"}
             </button>
 
@@ -59,8 +60,8 @@ const Navbar = () => {
                     <a className="dropdown-item d-flex align-items-center" href="#"><FaGift className="me-2 text-success" /> Gift Cards</a>
                   </li>
                   <li>
-                    <button 
-                      onClick={logout} 
+                    <button
+                      onClick={logout}
                       className="dropdown-item d-flex align-items-center text-danger border-0 bg-white w-100"
                     >
                       <FaSignOutAlt className="me-2" /> Logout
@@ -77,9 +78,11 @@ const Navbar = () => {
           </div>
 
           {/* Cart */}
-          <div className="d-flex align-items-center cursor-pointer">
-            <FaShoppingCart className="me-1" /> Cart
-          </div>
+          <Link to="/cart" className="text-decoration-none text-dark">
+            <div className="d-flex align-items-center cursor-pointer">
+              <FaShoppingCart className="me-1" /> Cart
+            </div>
+          </Link>
 
           {/* Become a Seller */}
           <div className="d-flex align-items-center cursor-pointer">

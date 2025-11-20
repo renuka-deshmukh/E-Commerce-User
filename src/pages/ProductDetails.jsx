@@ -4,6 +4,10 @@ import { getProductById } from "../services/productApi";
 import { getAllCategories } from "../services/categoryApi";
 import { getAllBrands } from "../services/brandApi";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useDispatch } from "react-redux";
+import { calculateTotals } from "../app/features/cart/cartSlice";
+import { addToCartBackend, fetchCart } from "../app/features/cart/cartSlice";
+
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -13,6 +17,26 @@ const ProductDetails = () => {
   const [category, setCategory] = useState("-");
   const [brand, setBrand] = useState("-");
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const user = JSON.parse(localStorage.getItem("loggedInAdmin"));
+
+  const handleAdd = async () => {
+    if (!user) return navigate("/login");
+
+    await dispatch(addToCartBackend({
+      productId: product.id,
+      quantity: 1
+    }));
+
+    await dispatch(fetchCart()); 
+    dispatch(calculateTotals());
+
+    navigate("/cart");
+  };
+
+
 
   useEffect(() => {
     async function fetchData() {
@@ -124,9 +148,11 @@ const ProductDetails = () => {
           </ul>
 
           <div className="d-flex gap-3">
-            <button className="btn btn-warning btn-lg fw-semibold px-4">
+            <button className="btn btn-warning btn-lg fw-semibold px-4" onClick={handleAdd}>
               ADD TO CART
             </button>
+
+
             <button className="btn btn-danger btn-lg fw-semibold px-4">
               BUY NOW
             </button>

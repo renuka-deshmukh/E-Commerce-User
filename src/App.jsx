@@ -9,15 +9,18 @@ import ProductsPage from './components/ProductsPage';
 import Login from './pages/authorization/Login';
 import Register from './pages/authorization/Register';
 import { AuthProvider } from './context/AuthProvider';
+import CartPage from './pages/Cart';
 
 function App() {
   return (
     <AuthProvider>
-       <Navbar /> {/* Navbar can now access AuthContext */}
+      
       <BrowserRouter>
+       <Navbar /> {/* Navbar can now access AuthContext */}
         <Routes>
           <Route path='/' element={<Dashboard />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<CartPage />} /> 
           <Route path="/products/:category" element={<ProductsPage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />

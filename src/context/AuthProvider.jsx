@@ -24,28 +24,27 @@ const AuthProvider = ({ children }) => {
 
 
   const login = async (email, password) => {
-    try {
-      const res = await loginUser({ email, password });
+  try {
+    const res = await loginUser({ email, password });
 
-      if (res.data.success) {
-        // ✅ Store token and user info
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem(
-          "loggedInAdmin",
-          JSON.stringify({ email, name: res.data.name, user_id: res.data.user_id })
-        );
+    if (res.data.success) {
 
-        setLoggedUser({ email, name: res.data.name, user_id: res.data.user_id });
+      // Save token
+      localStorage.setItem("token", res.data.token);
 
-        // ✅ Return full response to handle in Login.jsx
-        return { success: true, msg: res.data.msg };;
-      }
-      //  return { success: false, msg: res.data.msg || "Login failed ❌" };
-    } catch (err) {
-      console.error(err);
-      return { success: false, msg: "Login failed ❌" };
+      // Save user correctly
+      localStorage.setItem("loggedInAdmin", JSON.stringify(res.data.user));
+
+      setLoggedUser(res.data.user);
+
+      return { success: true, msg: res.data.msg };
     }
-  };
+  } catch (err) {
+    console.error(err);
+    return { success: false, msg: "Login failed ❌" };
+  }
+};
+
 
   const logout = () => {
     setLoggedUser(null);
